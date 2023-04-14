@@ -9,7 +9,7 @@ class LoginDataBaseHelper(val context: Context,val name:String,val version: Int)
     SQLiteOpenHelper(context,name,null,version) {
 
     private val createLogin = "create table ${name} (" +
-            "id integer primary key autoincrement," +
+            "id integer primary key," +
             "dmkj_uname text," +
             "dmkj_pass text," +
             "moodle_uname text," +
