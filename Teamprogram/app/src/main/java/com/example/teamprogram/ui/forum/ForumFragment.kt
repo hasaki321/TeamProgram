@@ -1,11 +1,16 @@
 package com.example.teamprogram.ui.forum
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -13,7 +18,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teamprogram.ForumUserLoginPage
 import com.example.teamprogram.databinding.FragmentForumBinding
+import java.io.BufferedWriter
+import java.io.IOException
+import java.io.OutputStreamWriter
 
 class ForumFragment :Fragment(){
     private var _binding: FragmentForumBinding? = null
@@ -30,6 +39,19 @@ class ForumFragment :Fragment(){
 
         _binding = FragmentForumBinding.inflate(inflater,container,false)
         val  root: View = binding.root
+
+        var  db: SQLiteDatabase? = null;
+
+        try {
+            context?.openFileInput("userdata")
+            Toast.makeText(context,"tried fetch data", Toast.LENGTH_SHORT).show()
+            Log.d("user data","tried")
+        } catch (e: IOException) {
+            val intent = Intent(context,ForumUserLoginPage::class.java)
+            startActivityForResult(intent, 1)
+        }
+
+
 
         val recyclerView: RecyclerView = binding.recyclerviewForum
         val forumList = forumViewModel.data
@@ -62,5 +84,21 @@ class ForumFragment :Fragment(){
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            1 -> if(resultCode == RESULT_OK) {
+                val returnusername = data?.getStringExtra("username")
+                val returnemail = data?.getStringExtra("email")
+                val output = context?.openFileOutput("userdata", Context.MODE_PRIVATE)
+                val writer = BufferedWriter(OutputStreamWriter(output))
+                writer.use {
+                    it.write(returnusername)
+                    it.write(returnemail)
+                }
+                Toast.makeText(context,"user data successfully made!",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
