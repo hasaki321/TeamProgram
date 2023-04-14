@@ -33,39 +33,62 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val check = binding.loginCheckbox
+
 
         val name:String = "login"
+
         val dbHelper = context?.let { LoginDataBaseHelper(it,name, 1) }
         val db = dbHelper?.writableDatabase
 
         val cursor = db?.query(name, null,null, null, null, null, null, null)
         Log.d("curser:",cursor.toString())
-        if (cursor?.moveToFirst() == true){
-            binding.dmkjUname.setText(cursor.getString(cursor.getColumnIndex("dmkj_uname")))
-            binding.dmkjPass.setText(cursor.getString(cursor.getColumnIndex("dmkj_pass")))
-            binding.moodleUname.setText(cursor.getString(cursor.getColumnIndex("moodle_uname")))
-            binding.moodlePass.setText(cursor.getString(cursor.getColumnIndex("moodle_pass")))
-            binding.xxtUname.setText(cursor.getString(cursor.getColumnIndex("xxt_uname")))
-            binding.xxtPass.setText(cursor.getString(cursor.getColumnIndex("xxt_pass")))}
+
+        if (cursor?.moveToFirst() == true){ //如果表里面有数据
+            if (cursor.getInt(cursor.getColumnIndex("remember_check")) == 1) { //如果已选择记住
+                binding.loginCheckbox.isChecked = true //将选择框勾选
+                binding.dmkjUname.setText(cursor.getString(cursor.getColumnIndex("dmkj_uname")))
+                binding.dmkjPass.setText(cursor.getString(cursor.getColumnIndex("dmkj_pass")))
+                binding.moodleUname.setText(cursor.getString(cursor.getColumnIndex("moodle_uname")))
+                binding.moodlePass.setText(cursor.getString(cursor.getColumnIndex("moodle_pass")))
+                binding.xxtUname.setText(cursor.getString(cursor.getColumnIndex("xxt_uname")))
+                binding.xxtPass.setText(cursor.getString(cursor.getColumnIndex("xxt_pass")))
+            }
+        }else{ //表中没有数据就创建一个不记忆的空内容
+            val novalues = ContentValues().apply {
+                put("id","1")
+                put("remember_check", 0)
+            }
+            db?.insert(name, null, novalues)
+        }
 
         binding.submitButton.setOnClickListener() {
-            val values = ContentValues().apply {
-                put("id","1")
-                put("dmkj_uname", binding.dmkjUname.text.toString())
-                put("dmkj_pass", binding.dmkjPass.text.toString())
-                put("moodle_uname", binding.moodleUname.text.toString())
-                put("moodle_pass", binding.moodlePass.text.toString())
-                put("xxt_uname", binding.xxtUname.text.toString())
-                put("xxt_pass", binding.xxtPass.text.toString())
-            }
-            if (cursor?.moveToFirst() == true) {
+
+            if (binding.loginCheckbox.isChecked) { //如果勾选记住
+
+                val values = ContentValues().apply {
+                    put("id","1")
+                    put("dmkj_uname", binding.dmkjUname.text.toString())
+                    put("dmkj_pass", binding.dmkjPass.text.toString())
+                    put("moodle_uname", binding.moodleUname.text.toString())
+                    put("moodle_pass", binding.moodlePass.text.toString())
+                    put("xxt_uname", binding.xxtUname.text.toString())
+                    put("xxt_pass", binding.xxtPass.text.toString())
+                    put("remember_check", 1)
+                }
+
                 db?.delete(name,"id = ?", arrayOf("1"))
                 Log.d("delete:","successed")
                 db?.insert(name, null, values)
                 Log.d("insert:","successed")
-            } else {
-                db?.insert(name, null, values)
-                Log.d("creat:","successed")
+            }else{
+                db?.delete(name,"id = ?", arrayOf("1"))
+                Log.d("delete:","successed")
+                val novalues = ContentValues().apply {
+                    put("id","1")
+                    put("remember_check", 0)
+                }
+                db?.insert(name, null, novalues)
             }
         }
         return root

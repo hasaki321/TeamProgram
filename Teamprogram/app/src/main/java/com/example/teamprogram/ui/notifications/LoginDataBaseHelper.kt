@@ -15,7 +15,8 @@ class LoginDataBaseHelper(val context: Context,val name:String,val version: Int)
             "moodle_uname text," +
             "moodle_pass text," +
             "xxt_uname text," +
-            "xxt_pass text)"
+            "xxt_pass text," +
+            "remember_check int)"
 
     override fun onCreate(p0: SQLiteDatabase?) {
         p0?.execSQL(createLogin)
