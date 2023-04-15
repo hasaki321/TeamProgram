@@ -12,9 +12,13 @@
         android:theme="@style/Theme.TeamProgram"
         tools:targetApi="31">
         <activity
-            android:name=".ForumUserLoginPage"
+            android:name=".ForumPublishPage"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert"/>
+        <activity
+            android:name=".ForumUserLoginPage"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
         <activity
             android:name=".Content"
             android:exported="false"

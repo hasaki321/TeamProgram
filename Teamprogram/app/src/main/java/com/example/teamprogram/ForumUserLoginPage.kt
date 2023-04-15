@@ -30,16 +30,12 @@ class ForumUserLoginPage : AppCompatActivity() {
                 }
             }
             binding.forumInputUsername.setText(strList[0])
-            Log.d("user name",strList[0])
-            Log.d("email",strList[1])
             binding.forumInputEmail.setText(strList[1])
         } catch (e: java.lang.Exception) {}
 
         binding.forumInputSubmit.setOnClickListener(){
             val username = binding.forumInputUsername.text.toString()
             val email = binding.forumInputEmail.text.toString()
-
-            Log.d("user name fetch",username)
 
             val intent = Intent()
             intent.putExtra("username",username)
