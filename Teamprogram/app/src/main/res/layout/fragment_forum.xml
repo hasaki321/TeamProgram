@@ -23,8 +23,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add new"
-        tools:layout_editor_absoluteX="316dp"
-        tools:layout_editor_absoluteY="529dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/forum_user_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User page"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="316dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,26 +42,32 @@ class ForumFragment :Fragment(){
 
         var  db: SQLiteDatabase? = null;
 
+        //登录检测
+        run{
+            try {
+                val strList = ArrayList<String>()
+                val input = context?.openFileInput("userdata")
+                Log.d("fetch user data", "tried")
 
-
-        try {
-            val strList = ArrayList<String>()
-            val input = context?.openFileInput("userdata")
-            Log.d("fetch user data","tried")
-
-            val reader = BufferedReader(InputStreamReader(input))
-            reader.use {
-                reader.forEachLine {
-                    strList.add(it)
+                val reader = BufferedReader(InputStreamReader(input))
+                reader.use {
+                    reader.forEachLine {
+                        strList.add(it)
+                    }
                 }
-            }
-            Toast.makeText(context,"Automatic login successfully!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Automatic login successfully!", Toast.LENGTH_SHORT).show()
 
-        } catch (e: java.lang.Exception) {
-            val intent = Intent(context,ForumUserLoginPage::class.java)
-            startActivityForResult(intent, 1)
+            } catch (e: java.lang.Exception) {
+                val intent = Intent(context, ForumUserLoginPage::class.java)
+                startActivityForResult(intent, 1)
+            }
         }
 
+        //点击用户详情界面
+        binding.forumUserButton.setOnClickListener(){
+            val intent = Intent(context, ForumUserLoginPage::class.java)
+            startActivityForResult(intent, 1)
+        }
 
 
         val recyclerView: RecyclerView = binding.recyclerviewForum
@@ -109,6 +115,7 @@ class ForumFragment :Fragment(){
                 val writer = BufferedWriter(OutputStreamWriter(output))
                 writer.use {
                     it.write(returnusername)
+                    it.write("\n")
                     it.write(returnemail)
                 }
             }

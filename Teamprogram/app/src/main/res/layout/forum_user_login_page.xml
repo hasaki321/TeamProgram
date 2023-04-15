@@ -28,7 +28,7 @@
             android:background="#000"
             android:layout_margin="5dp"/>
         <EditText
-            android:id="@+id/forum_input_eamil"
+            android:id="@+id/forum_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
