@@ -2,6 +2,7 @@ package com.example.teamprogram
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -17,8 +18,10 @@ class ForumUserLoginPage : AppCompatActivity() {
         setContentView(view)
 
         binding.forumInputSubmit.setOnClickListener(){
-            val username = binding.forumInputUsername.text
-            val email = binding.forumInputEamil.text
+            val username = binding.forumInputUsername.text.toString()
+            val email = binding.forumInputEamil.text.toString()
+
+            Log.d("user name fetch",username)
 
             val intent = Intent()
             intent.putExtra("username",username)

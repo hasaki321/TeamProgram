@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.system.ErrnoException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,9 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.ForumUserLoginPage
 import com.example.teamprogram.databinding.FragmentForumBinding
-import java.io.BufferedWriter
-import java.io.IOException
-import java.io.OutputStreamWriter
+import java.io.*
+import java.lang.reflect.InvocationTargetException
 
 class ForumFragment :Fragment(){
     private var _binding: FragmentForumBinding? = null
@@ -42,11 +42,22 @@ class ForumFragment :Fragment(){
 
         var  db: SQLiteDatabase? = null;
 
+
+
         try {
-            context?.openFileInput("userdata")
-            Toast.makeText(context,"tried fetch data", Toast.LENGTH_SHORT).show()
-            Log.d("user data","tried")
-        } catch (e: IOException) {
+            val strList = ArrayList<String>()
+            val input = context?.openFileInput("userdata")
+            Log.d("fetch user data","tried")
+
+            val reader = BufferedReader(InputStreamReader(input))
+            reader.use {
+                reader.forEachLine {
+                    strList.add(it)
+                }
+            }
+            Toast.makeText(context,"Automatic login successfully!",Toast.LENGTH_SHORT).show()
+
+        } catch (e: java.lang.Exception) {
             val intent = Intent(context,ForumUserLoginPage::class.java)
             startActivityForResult(intent, 1)
         }
@@ -90,6 +101,9 @@ class ForumFragment :Fragment(){
         when (requestCode) {
             1 -> if(resultCode == RESULT_OK) {
                 val returnusername = data?.getStringExtra("username")
+                if (returnusername != null) {
+                    Log.d("return name",returnusername)
+                }
                 val returnemail = data?.getStringExtra("email")
                 val output = context?.openFileOutput("userdata", Context.MODE_PRIVATE)
                 val writer = BufferedWriter(OutputStreamWriter(output))
@@ -97,7 +111,6 @@ class ForumFragment :Fragment(){
                     it.write(returnusername)
                     it.write(returnemail)
                 }
-                Toast.makeText(context,"user data successfully made!",Toast.LENGTH_SHORT).show()
             }
         }
     }
