@@ -29,7 +29,6 @@ class ForumUserLoginPage : AppCompatActivity() {
                     strList.add(it)
                 }
             }
-            Toast.makeText(this, "fetch data successfully!", Toast.LENGTH_SHORT).show()
             binding.forumInputUsername.setText(strList[0])
             Log.d("user name",strList[0])
             Log.d("email",strList[1])
@@ -48,16 +47,5 @@ class ForumUserLoginPage : AppCompatActivity() {
             setResult(RESULT_OK, intent)
             finish()
         }
-    }
-
-    override fun onBackPressed() {
-        val username = findViewById<EditText>(R.id.forum_input_username).text.toString()
-        val email = findViewById<EditText>(R.id.forum_input_email).text.toString()
-
-        val intent = Intent()
-        intent.putExtra("username",username)
-        intent.putExtra("email",email)
-        setResult(RESULT_OK, intent)
-        finish()
     }
 }
