@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.Content
 import com.example.teamprogram.R
 
-class HomeworkAdapter(val homeworkList: List<HomeWorkContent>) :RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder>(){
+class HomeworkAdapter(val homeworkList: ArrayList<HomeWorkContent>) :RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder>(){
 
     inner class HomeworkViewHolder(view: View):RecyclerView.ViewHolder(view) {
         val title = view.findViewById<TextView>(R.id.textView)
