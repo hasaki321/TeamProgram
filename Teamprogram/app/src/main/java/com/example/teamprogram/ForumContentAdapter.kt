@@ -5,9 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.teamprogram.ui.forum.ForumAdapter
 import com.example.teamprogram.ui.forum.ForumComment
-import com.example.teamprogram.ui.forum.Forum_Text
 
 class ForumContentAdapter (val DataList: ArrayList<ForumComment>): RecyclerView.Adapter<ForumContentAdapter.ForumContentViewHolder>() {
 

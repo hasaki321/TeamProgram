@@ -15,7 +15,6 @@ class ForumDataBaseHelper(val context: Context, val name:String, val version: In
 
     override fun onCreate(p0: SQLiteDatabase?) {
         p0?.execSQL(createLogin)
-        Toast.makeText(context,"table created", Toast.LENGTH_SHORT).show()
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
