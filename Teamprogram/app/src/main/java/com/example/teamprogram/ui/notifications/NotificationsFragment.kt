@@ -33,16 +33,12 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val check = binding.loginCheckbox
-
-
         val name:String = "login"
 
         val dbHelper = context?.let { LoginDataBaseHelper(it,name, 1) }
         val db = dbHelper?.writableDatabase
 
         val cursor = db?.query(name, null,null, null, null, null, null, null)
-        Log.d("curser:",cursor.toString())
 
         if (cursor?.moveToFirst() == true){ //如果表里面有数据
             if (cursor.getInt(cursor.getColumnIndex("remember_check")) == 1) { //如果已选择记住
@@ -83,7 +79,7 @@ class NotificationsFragment : Fragment() {
                 Log.d("insert:","successed")
             }else{
                 db?.delete(name,"id = ?", arrayOf("1"))
-                Log.d("delete:","successed")
+                Log.d("no checked delete:","successed")
                 val novalues = ContentValues().apply {
                     put("id","1")
                     put("remember_check", 0)

@@ -10,8 +10,7 @@ class ForumContentDataHelper (val context: Context, val name:String, val version
 
     private val createContentList = "create table ${name} (" +
             "id integer primary key," +
-            "username text" +
-            "email text," +
+            "username text," +
             "content text)"
 
     override fun onCreate(p0: SQLiteDatabase?) {

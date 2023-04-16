@@ -1,13 +1,15 @@
 package com.example.teamprogram.ui.forum
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.ForumConent
 import com.example.teamprogram.R
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class ForumAdapter (val forumList: List<ForumList>):RecyclerView.Adapter<ForumAdapter.ForumViewHolder>() {
 
@@ -23,7 +25,8 @@ class ForumAdapter (val forumList: List<ForumList>):RecyclerView.Adapter<ForumAd
         viewHolder.itemView.setOnClickListener(){
             val position = viewHolder.adapterPosition
             val forumItem = forumList[position]
-            Toast.makeText(parent.context,"you clicked ${position}",Toast.LENGTH_SHORT).show()
+            val reader = BufferedReader(InputStreamReader(parent.context.openFileInput("userdata")))
+            ForumConent.actionStart(parent.context, position,reader.readLine(),forumItem.username,forumItem.title,forumItem.content)
         }
         return viewHolder
     }
