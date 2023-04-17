@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Team program</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_forum" />
-    <string name="title_New">New</string>
-    <string name="title_Forum">Forum</string>
-</resources>
