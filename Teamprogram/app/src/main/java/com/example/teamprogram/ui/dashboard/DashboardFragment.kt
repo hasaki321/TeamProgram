@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teamprogram.NewSchedule
 import com.example.teamprogram.databinding.FragmentDashboardBinding
 import java.util.*
 import kotlin.collections.ArrayList
@@ -61,6 +62,8 @@ class DashboardFragment : Fragment(),View.OnClickListener {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        //增加新日程
+        binding.addNewSchedule.setOnClickListener(this)
         return root
     }
 
@@ -115,7 +118,19 @@ class DashboardFragment : Fragment(),View.OnClickListener {
     override fun onClick(p0: View?) {
         when(p0){
             binding.addNewSchedule -> {
+                val intent = Intent(context,NewSchedule::class.java)
+                startActivityForResult(intent,1)
+            }
+        }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            1 -> {
+                db = HomeworkDataHelper(context!!,"homeworklist",1).readableDatabase
+                cursor = db.query("homeworkList", null,null, null, null, null, "day ASC,hour ASC,minute ASC", null)
+                getList()
             }
         }
     }
