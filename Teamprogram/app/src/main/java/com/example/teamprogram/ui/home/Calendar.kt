@@ -5,5 +5,7 @@ class Calendar (val title:String, val timeLeft:String, val type:Int, val date:St
         const val Empty = 0
         const val Object = 1
         const val Date = 2
+        const val Today = -1
+        const val Now = -2
     }
 }
