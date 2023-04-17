@@ -1,34 +1,26 @@
 package com.example.teamprogram.ui.dashboard
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.Content
 import com.example.teamprogram.R
 
-class HomeworkAdapter(val homeworkList: List<HomeWorkContent>) :RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder>(){
+class HomeworkAdapter(val homeworkList: ArrayList<HomeWorkContent>) :RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder>(){
 
     inner class HomeworkViewHolder(view: View):RecyclerView.ViewHolder(view) {
-        val title = view.findViewById<TextView>(R.id.textView)
-        val content = view.findViewById<TextView>(R.id.textView2)
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position % 2
+        val title = view.findViewById<TextView>(R.id.Homework_title)
+        val content = view.findViewById<TextView>(R.id.Homework_content)
+        val time_left = view.findViewById<TextView>(R.id.time_left)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):HomeworkViewHolder{
-        val view:View
-        if (viewType == 0) {
-            view =
-                LayoutInflater.from(parent.context).inflate(R.layout.dash_board_item, parent, false)
-        }else{
-            view =
-                LayoutInflater.from(parent.context).inflate(R.layout.dash_board_item_1, parent, false)
-        }
+        val view:View = LayoutInflater.from(parent.context).inflate(R.layout.dash_board_item, parent, false)
         val viewHolder = HomeworkViewHolder(view)
         viewHolder.itemView.setOnClickListener(){
             val position = viewHolder.adapterPosition
@@ -42,6 +34,7 @@ class HomeworkAdapter(val homeworkList: List<HomeWorkContent>) :RecyclerView.Ada
         val homeworkItem = homeworkList[position]
         holder.title.text = homeworkItem.title
         holder.content.text = homeworkItem.content
+        holder.time_left.text = "剩余时间：\n ${homeworkItem.time_left} h ${homeworkItem.minute} min"
     }
 
     override fun getItemCount() = homeworkList.size
