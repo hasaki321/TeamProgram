@@ -1,3 +1,3 @@
 package com.example.teamprogram.ui.dashboard
 
-class HomeWorkContent (val title:String, val content:String, val time_left :String, val minute:Int = 0)
+class HomeWorkContent (val course:String, val title:String, val content:String, val time_left :Long)
