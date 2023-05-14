@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.teamprogram.databinding.FragmentNotificationsBinding
@@ -39,6 +40,10 @@ class NotificationsFragment : Fragment() {
         val root: View = binding.root
 
         val name:String = "login"
+
+        binding.webview.settings.javaScriptEnabled=true
+        binding.webview.webViewClient = WebViewClient()
+        binding.webview.loadUrl("http://10.0.2.2:3000/forum")
 
         val dbHelper = context?.let { LoginDataBaseHelper(it,name, 1) }
         val db = dbHelper?.writableDatabase

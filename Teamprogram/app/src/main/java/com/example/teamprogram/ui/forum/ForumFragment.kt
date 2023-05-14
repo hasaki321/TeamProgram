@@ -5,14 +5,17 @@ import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.os.AsyncTask
 import android.os.Bundle
 import android.system.ErrnoException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -26,6 +29,14 @@ import com.example.teamprogram.ForumPublishPage
 import com.example.teamprogram.ForumUserLoginPage
 import com.example.teamprogram.databinding.FragmentForumBinding
 import com.example.teamprogram.ui.notifications.LoginDataBaseHelper
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.*
 import java.lang.reflect.InvocationTargetException
 
@@ -35,10 +46,8 @@ class ForumFragment :Fragment(), View.OnClickListener {
     private var _binding: FragmentForumBinding? = null
     private val binding get() = _binding!!
 
-
-
-    private val DataList = ArrayList<ForumList>()
-    private var adapter:ForumAdapter ?= null
+    lateinit var DataList:List<ForumList>
+    lateinit var adapter:ForumAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,33 +57,11 @@ class ForumFragment :Fragment(), View.OnClickListener {
         _binding = FragmentForumBinding.inflate(inflater,container,false)
         val  root: View = binding.root
 
-        val db = context?.let { ForumListDataHelper(it, "forumList", 1) }?.readableDatabase
-        val cursor = db?.query("forumList", null,null, null, null, null, null, null)
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    // 遍历Cursor对象，取出数据
-                    val name = cursor.getString(cursor.getColumnIndex("username"))
-                    val title = cursor.getString(cursor.getColumnIndex("title"))
-                    val content = cursor.getString(cursor.getColumnIndex("content"))
-                    DataList.add(ForumList(name, title, content))
-                } while (cursor.moveToNext())
-            }
-            Log.d("datalist size",DataList.size.toString())
-            adapter = ForumAdapter(DataList)
-        }
-
-        val adapter = ForumAdapter(DataList)
-        binding.recyclerviewForum.adapter = adapter
-        binding.recyclerviewForum.layoutManager = LinearLayoutManager(context)
-
         //登录检测
         run{
             try {
                 val strList = ArrayList<String>()
                 val input = context?.openFileInput("userdata")
-                Log.d("fetch user data", "tried")
 
                 val reader = BufferedReader(InputStreamReader(input))
                 reader.use {
@@ -90,12 +77,35 @@ class ForumFragment :Fragment(), View.OnClickListener {
             }
         }
 
+        Async().execute()
+
         //点击用户详情界面
         binding.forumUserButton.setOnClickListener(this)
         //发布新贴
         binding.forumAddButton.setOnClickListener(this)
         return root
     }
+
+    inner class Async: AsyncTask<Void, Void, Void>(){
+        lateinit var data:List<ForumList>
+        override fun doInBackground(vararg p0: Void?): Void? {
+            val client = OkHttpClient()
+
+            val request = Request.Builder()
+                .url("http://10.0.2.2:3000/forum/post")
+                .build()
+            val response = client.newCall(request).execute()
+            val responseData = response.body?.string()
+            data = parseJson(responseData!!)
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            DataList = data
+            adapt()
+        }
+    }
+
     override fun onClick(p0: View?) {
         when(p0) {
             binding.forumAddButton -> {
@@ -104,9 +114,16 @@ class ForumFragment :Fragment(), View.OnClickListener {
                     //进入发布内容界面
                     val input = context?.openFileInput("userdata")
 
-                    val username = BufferedReader(InputStreamReader(input)).readLine()
+                    val strList = ArrayList<String>()
+                    val reader = BufferedReader(InputStreamReader(input))
+                    reader.use {
+                        reader.forEachLine {
+                            strList.add(it)
+                        }
+                    }
                     val intent = Intent(context, ForumPublishPage::class.java)
-                    intent.putExtra("username",username)
+                    intent.putExtra("username",strList[0])
+                    intent.putExtra("email",strList[1])
                     startActivityForResult(intent, 2)
 
                 } catch (e: java.lang.Exception) {
@@ -143,22 +160,29 @@ class ForumFragment :Fragment(), View.OnClickListener {
                 }
             }
             2 -> if(resultCode == RESULT_OK) {
-                val dbHelper = context?.let { ForumListDataHelper(it, "forumList", 1) }
-                val db = dbHelper?.readableDatabase
-                val cursor = db?.query("forumList", null,null, null, null, null, null, null)
-                if (cursor != null) {
-                    cursor.moveToLast()
-                    val name = cursor.getString(cursor.getColumnIndex("username"))
-                    val title = cursor.getString(cursor.getColumnIndex("title"))
-                    val content = cursor.getString(cursor.getColumnIndex("content"))
-                    DataList.add(ForumList(name, title, content))
-
-                    adapter?.notifyItemInserted(cursor.count - 1)
-                    binding.recyclerviewForum.scrollToPosition(cursor.count - 1)
-                }
+                val returndata = data?.getStringExtra("responseData")
+                Async().execute()
+                Toast.makeText(context, returndata, Toast.LENGTH_SHORT).show()
             }
         }
     }
+    private fun parseJson(data:String):List<ForumList>{
+        val jsonArray = JSONArray(data)
+        val list = ArrayList<ForumList>()
+        for (i in 0 until jsonArray.length()) {
+            val jsonObject = JSONObject(jsonArray.getString(i))
+            val uname = jsonObject.getString("uname")
+            val email = jsonObject.getString("email")
+            val title = jsonObject.getString("title")
+            val content = jsonObject.getString("content")
+            list.add(ForumList(uname,email,title,content))
+        }
+        return list
+    }
 
-
+    private fun adapt(){
+        adapter = ForumAdapter(DataList)
+        binding.recyclerviewForum.adapter = adapter
+        binding.recyclerviewForum.layoutManager = LinearLayoutManager(context)
+    }
 }
