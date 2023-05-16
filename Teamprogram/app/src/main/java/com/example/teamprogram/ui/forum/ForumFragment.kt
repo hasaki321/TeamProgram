@@ -8,9 +8,11 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -76,7 +78,7 @@ class ForumFragment :Fragment(), View.OnClickListener {
             val client = OkHttpClient()
 
             val request = Request.Builder()
-                .url("http://10.0.2.2:3000/forum/post")
+                .url("http://101.43.184.204:3002/forum/post")
                 .build()
             val response = client.newCall(request).execute()
             val responseData = response.body?.string()
@@ -121,6 +123,7 @@ class ForumFragment :Fragment(), View.OnClickListener {
                 startActivityForResult(intent, 1)
             }
         }
+        binding.forumDrawer.closeDrawers()
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -150,6 +153,7 @@ class ForumFragment :Fragment(), View.OnClickListener {
             }
         }
     }
+
     private fun parseJson(data:String):List<ForumList>{
         val jsonArray = JSONArray(data)
         val list = ArrayList<ForumList>()

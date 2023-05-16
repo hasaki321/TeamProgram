@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -58,6 +59,7 @@ class DashboardFragment : Fragment(),View.OnClickListener {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,26 +81,28 @@ class DashboardFragment : Fragment(),View.OnClickListener {
 
     private fun getList(){
         DataList = ArrayList<HomeWorkContent>()
-
-        // 获取SharedPreferences实例
         val sharedPreferences: SharedPreferences = activity!!.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
         val jsonString = sharedPreferences.getString("jsData", "")
-        val jsonArray = JSONArray(jsonString)
+        try {
+            // 获取SharedPreferences实例
+            val jsonArray = JSONArray(jsonString)
 
-        for (i in 0 until jsonArray.length()) {
-            val jsonObject = jsonArray.getJSONObject(i)
-            val course_name = jsonObject.getString("course_name")
-            val hw_name = jsonObject.getString("hw_name")
-            val end_time = jsonObject.getString("end_time").replace(" ","T")
-            val content = jsonObject.getString("content")
-            val time_left = get_remain_time(end_time)
-            if (time_left>0){
-                DataList.add(HomeWorkContent(course_name,hw_name,content,time_left))
+            for (i in 0 until jsonArray.length()) {
+                val jsonObject = jsonArray.getJSONObject(i)
+                val course_name = jsonObject.getString("course_name")
+                val hw_name = jsonObject.getString("hw_name")
+                val end_time = jsonObject.getString("end_time").replace(" ","T")
+                val content = jsonObject.getString("content")
+                val time_left = get_remain_time(end_time)
+                if (time_left>0){
+                    DataList.add(HomeWorkContent(course_name,hw_name,content,time_left))
 
+                }
             }
-            Log.d("out",jsonObject.toString())
+            DataList.sortBy  { it.time_left }
+        }catch (e:java.lang.Exception){
+            Toast.makeText(context,jsonString,Toast.LENGTH_SHORT).show()
         }
-        DataList.sortBy  { it.time_left }
     }
 
     private fun get_remain_time(time:String): Long {

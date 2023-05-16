@@ -6,4 +6,8 @@
     <string name="title_forum" />
     <string name="title_New">New</string>
     <string name="title_Forum">Forum</string>
+    <string name="title_Calendar" />
+    <string name="title_Applycations" />
+    <string name="title_Applications" />
+    <string name="forum_account" />
 </resources>

@@ -41,10 +41,6 @@ class NotificationsFragment : Fragment() {
 
         val name:String = "login"
 
-        binding.webview.settings.javaScriptEnabled=true
-        binding.webview.webViewClient = WebViewClient()
-        binding.webview.loadUrl("http://10.0.2.2:3000/forum")
-
         val dbHelper = context?.let { LoginDataBaseHelper(it,name, 1) }
         val db = dbHelper?.writableDatabase
 

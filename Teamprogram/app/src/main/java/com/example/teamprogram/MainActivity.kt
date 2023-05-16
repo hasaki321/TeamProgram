@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -20,6 +21,8 @@ import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 class MainActivity : AppCompatActivity() {
@@ -63,31 +66,54 @@ class MyAsyncTask: AsyncTask<Void, Void, Void>(){
     }
     override fun doInBackground(vararg p0: Void?): Void? {
         val client = OkHttpClient()
-        val requestBody = FormBody.Builder()
-            .add("uname","MTUwMTg3OTEyMTQ=")
-            .add("pwd","aHJzMjAwNDkyNA==")
-            .build()
 
-        val request = Request.Builder()
-            .url("http://www.lzuhrs.cn:3001/chaoxing")
-            .post(requestBody)
-            .build()
-        val response = client.newCall(request).execute()
-        val responseData = response.body?.string()
-        Log.d("responseData",responseData!!)
-        val jsArray: JSONArray = JSONArray(responseData)
-        val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
-        sharedPreferences.edit().apply{
-            putString("jsData",jsArray.toString())
-            apply()
-        }
+        val content = load("学习通")
+        if (content.isNullOrEmpty()){
+            val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
+            sharedPreferences.edit().apply{
+                putString("jsData","还没有输入学习通账户！")
+                apply()
+            }
+        }else{
+            val requestBody = FormBody.Builder()
+                .add("uname", String(Base64.encode(content[0].toByteArray(),Base64.DEFAULT)))
+                .add("pwd",String(Base64.encode(content[1].toByteArray(),Base64.DEFAULT)))
+                .build()
 
-        val jsonString = sharedPreferences.getString("jsData", "")
-        val jsonArray = JSONArray(jsonString)
-        for (i in 0 until jsonArray.length()) {
-            val jsonObject = jsonArray.getJSONObject(i)
-            Log.d("out",jsonObject.toString())
+            val request = Request.Builder()
+                .url("http://www.lzuhrs.cn:3001/chaoxing")
+                .post(requestBody)
+                .build()
+            val response = client.newCall(request).execute()
+            val responseData = response.body?.string()
+            val jsArray: JSONArray = JSONArray(responseData)
+            val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
+            sharedPreferences.edit().apply{
+                putString("jsData",jsArray.toString())
+                apply()
+            }
         }
         return null
+    }
+
+    override fun onCancelled() {
+        val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
+        sharedPreferences.edit().apply {
+            putString("jsData", "网络请求失败，请检查网络连接或者学习通账号密码是否正确")
+            apply()
+        }
+    }
+    private fun load(type: String): kotlin.collections.ArrayList<String> {
+        val content = kotlin.collections.ArrayList<String>()
+        try {
+            val input = _context.openFileInput(type)
+            val reader = BufferedReader(InputStreamReader(input))
+            reader.use {
+                reader.forEachLine {
+                    content.add(it)
+                }
+            }
+        }catch (_:java.lang.Exception){ }
+        return content
     }
 }

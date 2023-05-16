@@ -70,7 +70,7 @@ class ForumPublishPage : AppCompatActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://10.0.2.2:3000/forum/post")
+                .url("http://101.43.184.204:3002/forum/post")
                 .post(requestBody)
                 .build()
             val response = client.newCall(request).execute()

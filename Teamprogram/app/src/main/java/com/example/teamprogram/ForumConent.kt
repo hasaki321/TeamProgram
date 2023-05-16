@@ -58,7 +58,6 @@ class ForumConent : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forum_conent)
-        supportActionBar?.hide()
 
         _binding = ActivityForumConentBinding.inflate(layoutInflater)
         view = binding.root
@@ -107,7 +106,7 @@ class ForumConent : AppCompatActivity(), View.OnClickListener {
         }
 
         fun get(client:OkHttpClient){
-            val urlBuilder: HttpUrl.Builder = "http://10.0.2.2:3000/forum/comment".toHttpUrlOrNull()!!.newBuilder()
+            val urlBuilder: HttpUrl.Builder = "http://101.43.184.204:3002/forum/comment".toHttpUrlOrNull()!!.newBuilder()
             urlBuilder.addQueryParameter("PostID", intent.getIntExtra("PostID",0).toString())
             val url: String = urlBuilder.build().toString()
 
@@ -129,7 +128,7 @@ class ForumConent : AppCompatActivity(), View.OnClickListener {
                 .build()
 
             val request: Request = Request.Builder()
-                .url("http://10.0.2.2:3000/forum/comment")
+                .url("http://101.43.184.204:3002/forum/comment")
                 .post(requestBody)
                 .build()
 
