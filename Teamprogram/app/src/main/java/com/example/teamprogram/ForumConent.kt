@@ -1,49 +1,55 @@
 package com.example.teamprogram
 
 import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.os.Binder
-import androidx.appcompat.app.AppCompatActivity
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.example.teamprogram.databinding.ActivityForumConentBinding
-import com.example.teamprogram.databinding.ForumPublishPageBinding
-import com.example.teamprogram.databinding.FragmentForumBinding
 import com.example.teamprogram.ui.forum.*
-import java.text.FieldPosition
+import okhttp3.FormBody
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONObject
+import java.security.AccessController.getContext
+
 
 class ForumConent : AppCompatActivity(), View.OnClickListener {
-
-    private val DataList = ArrayList<ForumComment>()
-    private var adapter:ForumContentAdapter ?= null
-
     private var _binding: ActivityForumConentBinding? = null
     private val binding get() = _binding!!
 
+    lateinit var adapter:ForumContentAdapter
+    lateinit var DataList:List<ForumComment>
     lateinit var view:View
-    lateinit var db:ForumContentDataHelper
-    lateinit var cursor:Cursor
-    lateinit var builder:StringBuilder
 
     companion object{
-        fun actionStart(context: Context, position: Int, user: String, publisher:String,title: String, content:String){
+        fun actionStart(
+            context: Context,
+            position: Int,
+            PostID:Int,
+            user: String,
+            publisher: String,
+            email: String,
+            title: String,
+            content: String,
+        ){
             val intent = Intent(context, ForumConent::class.java)
             intent.putExtra("position",position)
             intent.putExtra("user",user)
             intent.putExtra("publisher", publisher)
             intent.putExtra("title", title)
             intent.putExtra("content", content)
+            intent.putExtra("email", email)
+            intent.putExtra("PostID", PostID)
             context.startActivity(intent)
         }
     }
@@ -62,28 +68,9 @@ class ForumConent : AppCompatActivity(), View.OnClickListener {
         binding.forumContentUsername.text = intent.getStringExtra("publisher")
         binding.forumContentMain.text = intent.getStringExtra("content")
 
-        builder = StringBuilder()
-        builder.append(intent.getStringExtra("user"))
-        builder.append(intent.getStringExtra("title"))
-        builder.append("${intent.getIntExtra("position",0)}")
-
-
-        db = ForumContentDataHelper(this, builder.toString(), 1)
-        cursor = db.writableDatabase.query(builder.toString(), null,null, null, null, null, null, null)
-        if (cursor.moveToFirst()) {
-            do {
-                // 遍历Cursor对象，取出数据
-                val name = cursor.getString(cursor.getColumnIndex("username"))
-                val content = cursor.getString(cursor.getColumnIndex("content"))
-                DataList.add(ForumComment(name, content))
-            } while (cursor.moveToNext())
-        }
-
-        adapter = ForumContentAdapter(DataList)
-        binding.recyclerviewForumContent.adapter = adapter
-        binding.recyclerviewForumContent.layoutManager = LinearLayoutManager(this)
-
-
+        val async = Async()
+        async.get_type("get")
+        async.execute()
         binding.forumContentPublishButton.setOnClickListener(this)
     }
 
@@ -91,16 +78,100 @@ class ForumConent : AppCompatActivity(), View.OnClickListener {
         setContentView(view)
         when(p0) {
             binding.forumContentPublishButton -> {
-                val values = ContentValues().apply {
-                    put("username", intent.getStringExtra("user"))
-                    put("content",binding.forumContentEditText.text.toString())
-                }
-                db.writableDatabase.insert(builder.toString(),null,values)
-                cursor = db.readableDatabase.query(builder.toString(), null,null, null, null, null, null, null)
-                DataList.add(ForumComment(intent.getStringExtra("user"),binding.forumContentEditText.text.toString()))
-                adapter?.notifyItemChanged(cursor.count - 1)
-                binding.recyclerviewForumContent.scrollToPosition(cursor.count - 1)
+                val async = Async()
+                async.get_type("post")
+                async.get_data(
+                    intent.getStringExtra("user")!!,
+                    intent.getStringExtra("email")!!,
+                    binding.forumContentEditText.text.toString()
+                )
+                async.execute()
             }
         }
+    }
+    inner class Async: AsyncTask<Void, Void, Void>(){
+        private lateinit var data:List<ForumComment>
+        private lateinit var _type:String
+        private lateinit var _name:String
+        private lateinit var _email:String
+        private lateinit var _content:String
+
+        fun get_type(type:String){
+            _type = type
+        }
+
+        fun get_data(name:String,email:String,content:String){
+            _name = name
+            _email = email
+            _content = content
+        }
+
+        fun get(client:OkHttpClient){
+            val urlBuilder: HttpUrl.Builder = "http://10.0.2.2:3000/forum/comment".toHttpUrlOrNull()!!.newBuilder()
+            urlBuilder.addQueryParameter("PostID", intent.getIntExtra("PostID",0).toString())
+            val url: String = urlBuilder.build().toString()
+
+            val request: Request = Request.Builder()
+                .url(url)
+                .build()
+
+            val response = client.newCall(request).execute()
+            val responseData = response.body?.string()
+            data = parseJson(responseData!!)
+        }
+
+        fun post(client:OkHttpClient){
+            val requestBody = FormBody.Builder()
+                .add("PostID",intent.getIntExtra("PostID",0).toString())
+                .add("uname",_name)
+                .add("email",_email)
+                .add("content", _content)
+                .build()
+
+            val request: Request = Request.Builder()
+                .url("http://10.0.2.2:3000/forum/comment")
+                .post(requestBody)
+                .build()
+
+            val response = client.newCall(request).execute()
+            val responseData = response.body?.string()
+        }
+        override fun doInBackground(vararg p0: Void?): Void? {
+            val client = OkHttpClient()
+            if (_type=="post"){
+                post(client)
+            }else{
+                get(client)
+            }
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            if (_type=="get") {
+                DataList = data
+                adapt()
+            }else{
+                val async = Async()
+                async.get_type("get")
+                async.execute()
+            }
+        }
+    }
+    private fun adapt(){
+        adapter = ForumContentAdapter(DataList)
+        binding.recyclerviewForumContent.adapter = adapter
+        binding.recyclerviewForumContent.layoutManager = LinearLayoutManager(this)
+    }
+    private fun parseJson(data:String):List<ForumComment>{
+        val list = ArrayList<ForumComment>()
+        val jsonArray = JSONArray(data)
+        for (i in 0 until jsonArray.length()) {
+            val jsonObject = JSONObject(jsonArray.getString(i))
+            val uname = jsonObject.getString("uname")
+            val email = jsonObject.getString("email")
+            val content = jsonObject.getString("content")
+            list.add(ForumComment(uname,email,content))
+        }
+        return list
     }
 }

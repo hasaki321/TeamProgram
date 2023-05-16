@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.ui.forum.ForumComment
 
-class ForumContentAdapter (val DataList: ArrayList<ForumComment>): RecyclerView.Adapter<ForumContentAdapter.ForumContentViewHolder>() {
+class ForumContentAdapter (val DataList: List<ForumComment>): RecyclerView.Adapter<ForumContentAdapter.ForumContentViewHolder>() {
 
     inner class ForumContentViewHolder(view: View): RecyclerView.ViewHolder(view){
         val user = view.findViewById<TextView>(R.id.forum_content_item_username)
@@ -23,7 +23,7 @@ class ForumContentAdapter (val DataList: ArrayList<ForumComment>): RecyclerView.
     override fun getItemCount() = DataList.size
 
     override fun onBindViewHolder(holder: ForumContentViewHolder, position: Int) {
-        holder.user.text = DataList[position].name
+        holder.user.text = DataList[position].username
         holder.content.text  = DataList[position].content
     }
 }

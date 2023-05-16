@@ -2,37 +2,21 @@ package com.example.teamprogram.ui.forum
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
 import android.os.Bundle
-import android.system.ErrnoException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.ForumPublishPage
 import com.example.teamprogram.ForumUserLoginPage
 import com.example.teamprogram.databinding.FragmentForumBinding
-import com.example.teamprogram.ui.notifications.LoginDataBaseHelper
-import com.google.gson.Gson
-import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
-import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
@@ -171,11 +155,12 @@ class ForumFragment :Fragment(), View.OnClickListener {
         val list = ArrayList<ForumList>()
         for (i in 0 until jsonArray.length()) {
             val jsonObject = JSONObject(jsonArray.getString(i))
+            val PostID = jsonObject.getInt("PostID")
             val uname = jsonObject.getString("uname")
             val email = jsonObject.getString("email")
             val title = jsonObject.getString("title")
             val content = jsonObject.getString("content")
-            list.add(ForumList(uname,email,title,content))
+            list.add(ForumList(PostID,uname,email,title,content))
         }
         return list
     }

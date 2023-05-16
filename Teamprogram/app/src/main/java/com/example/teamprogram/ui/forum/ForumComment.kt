@@ -1,3 +1,3 @@
 package com.example.teamprogram.ui.forum
 
-class ForumComment (val name:String?, val content:String?)
+class ForumComment (val username:String?,val email:String, val content:String?)

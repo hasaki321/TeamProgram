@@ -65,7 +65,7 @@ class HomeFragment : Fragment() {
         val zoneId = ZoneId.of("Asia/Shanghai")
         val now = LocalDateTime.now(zoneId).hour
         Log.d("hour","${now}")
-        val position_now = (now - 6) / 3 + 7
+        val position_now = (now - 6) / 3 + 7 + 1
         if (now in 6..24){
             DataList[position_now] = Calendar("", "", Calendar.Now)
         }
@@ -82,7 +82,7 @@ class HomeFragment : Fragment() {
             val time_left = get_remain_time(end_time)
             Log.d("time","${time_left}")
             Log.d("position_now","${position_now}")
-            val position = position_now + (time_left / 24) * 7 + (time_left % 24) / 3 + 1
+            val position = position_now + (time_left / 24) * 7 + (time_left % 24) / 3
             val position_ = position.toInt()
             if (position_ in 0..48){
                 DataList[position_] = Calendar(hw_name,"${time_left}",Calendar.Object)

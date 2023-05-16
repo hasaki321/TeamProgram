@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
+
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        navView.setSelectedItemId(R.id.navigation_dashboard)
     }
 }
 
@@ -72,6 +74,7 @@ class MyAsyncTask: AsyncTask<Void, Void, Void>(){
             .build()
         val response = client.newCall(request).execute()
         val responseData = response.body?.string()
+        Log.d("responseData",responseData!!)
         val jsArray: JSONArray = JSONArray(responseData)
         val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
         sharedPreferences.edit().apply{

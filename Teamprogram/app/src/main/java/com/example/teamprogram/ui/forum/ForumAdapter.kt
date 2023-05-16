@@ -1,6 +1,5 @@
 package com.example.teamprogram.ui.forum
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,7 @@ class ForumAdapter (val forumList: List<ForumList>):RecyclerView.Adapter<ForumAd
             val position = viewHolder.adapterPosition
             val forumItem = forumList[position]
             val reader = BufferedReader(InputStreamReader(parent.context.openFileInput("userdata")))
-            ForumConent.actionStart(parent.context, position,reader.readLine(),forumItem.username,forumItem.title,forumItem.content)
+            ForumConent.actionStart(parent.context, position,forumItem.PostID,reader.readLine(),forumItem.username,forumItem.email,forumItem.title,forumItem.content)
         }
         return viewHolder
     }
