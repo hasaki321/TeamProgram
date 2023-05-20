@@ -4,133 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/app_wrapper"
     android:orientation="vertical"
-    android:paddingTop="30dp"
     tools:context=".ui.notifications.NotificationsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="5dp">
+        android:layout_height="0dp"
+        android:layout_weight="0.2">
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#000"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="请输入您的到梦空间账号"
-            android:textSize="12dp"
-            android:textAlignment="center"
-            />
-        <EditText
-            android:id="@+id/dmkj_uname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="username"/>
-        <EditText
-            android:id="@+id/dmkj_pass"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="password"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="5dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="请输入您的Moodle账号"
-            android:textSize="12dp"
-            android:textAlignment="center"
-            />
-        <EditText
-            android:id="@+id/moodle_uname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="username"/>
-        <EditText
-            android:id="@+id/moodle_pass"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="password"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="5dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:text="请输入您的学习通账号"
-            android:textSize="12dp"
-            android:textAlignment="center"
-            />
-        <EditText
-            android:id="@+id/xxt_uname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="username"/>
-        <EditText
-            android:id="@+id/xxt_pass"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="password"/>
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="0.3"
-            android:layout_gravity="center">
-            <CheckBox
-                android:id="@+id/login_checkbox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:text="Remember"/>
-        </LinearLayout>
+            android:layout_weight="1"/>
         <Button
-            android:id="@+id/submit_button"
-            android:layout_margin="7dp"
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
-            android:layout_height="wrap_content"
-            android:text="submit"/>
+            android:id="@+id/app_add"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:text="添加网址"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
-
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:id="@+id/app_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/app_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </LinearLayout>

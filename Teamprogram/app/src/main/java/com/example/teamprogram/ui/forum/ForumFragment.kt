@@ -11,13 +11,17 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.customview.widget.ViewDragHelper
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.ForumPublishPage
 import com.example.teamprogram.ForumUserLoginPage
+import com.example.teamprogram.R
 import com.example.teamprogram.databinding.FragmentForumBinding
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -42,6 +46,7 @@ class ForumFragment :Fragment(), View.OnClickListener {
     ): View? {
         _binding = FragmentForumBinding.inflate(inflater,container,false)
         val  root: View = binding.root
+
 
         //登录检测
         run{
