@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teamprogram.NewSchedule
 import com.example.teamprogram.databinding.FragmentDashboardBinding
+import com.example.teamprogram.ui.notifications.App
+import com.example.teamprogram.ui.notifications.NotificationsFragment
 import org.json.JSONArray
 import java.io.Serializable
 import java.time.Duration
@@ -66,6 +68,7 @@ class DashboardFragment : Fragment(),View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         getList()
         adapter = HomeworkAdapter(DataList)
+        adapter.context = context!!
         recyclerView = binding.recyclerviewDashboard
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -95,14 +98,28 @@ class DashboardFragment : Fragment(),View.OnClickListener {
                 val content = jsonObject.getString("content")
                 val time_left = get_remain_time(end_time)
                 if (time_left>0){
-                    DataList.add(HomeWorkContent(course_name,hw_name,content,time_left))
+                    DataList.add(HomeWorkContent(course_name,hw_name,content,time_left,HomeWorkContent.HOMEWORK))
 
                 }
             }
-            DataList.sortBy  { it.time_left }
         }catch (e:java.lang.Exception){
             Toast.makeText(context,jsonString,Toast.LENGTH_SHORT).show()
         }
+
+        db = HomeworkDataHelper(context!!,"homeworklist",1).readableDatabase
+        cursor = db.query("HomeworkList", null,null, null, null, null, null, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndex("id"))
+                val title = cursor.getString(cursor.getColumnIndex("title"))
+                val content = cursor.getString(cursor.getColumnIndex("content"))
+                val _time_left = cursor.getString(cursor.getColumnIndex("time"))
+                val time_left = get_remain_time(_time_left)
+                DataList.add(HomeWorkContent("",title,content,time_left,HomeWorkContent.CREATE,id))
+            } while (cursor.moveToNext())
+        }
+        DataList.sortBy  { it.time_left }
+
     }
 
     private fun get_remain_time(time:String): Long {
@@ -119,6 +136,7 @@ class DashboardFragment : Fragment(),View.OnClickListener {
         override fun onReceive(p0: Context?, p1: Intent?) {
             getList()
             adapter = HomeworkAdapter(DataList)
+            adapter.context = context!!
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(context)
         }
@@ -137,9 +155,11 @@ class DashboardFragment : Fragment(),View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode){
             1 -> {
-                db = HomeworkDataHelper(context!!,"homeworklist",1).readableDatabase
-                cursor = db.query("homeworkList", null,null, null, null, null, "day ASC,hour ASC,minute ASC", null)
                 getList()
+                adapter = HomeworkAdapter(DataList)
+                adapter.context = context!!
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(context)
             }
         }
     }

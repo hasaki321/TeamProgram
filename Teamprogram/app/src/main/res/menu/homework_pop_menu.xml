@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/homework_item_mod"
+        android:title="更改内容"/>
+    <item android:id="@+id/homework_item_del"
+        android:title="删除"/>
+</menu>

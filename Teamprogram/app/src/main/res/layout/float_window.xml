@@ -9,49 +9,56 @@
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:layout_margin="10dp"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/account_pop_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="18dp"/>
-        <View
+        android:fontFamily="sans-serif-black"
+        android:textSize="20dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_margin="5dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="请输入账号">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/account_pop_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/account_pop_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:hint="请输入账号" />
 
-        <View
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_margin="5dp"/>
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            android:layout_marginTop="20dp"
+            android:hint="请输入密码">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/account_pop_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:layout_margin="5dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/account_pop_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:layout_margin="7dp"
-        android:hint="请输入密码" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/account_pop_submit"
             android:layout_width="0dp"
+            app:cornerRadius="7dp"
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
             android:text="提交" />
