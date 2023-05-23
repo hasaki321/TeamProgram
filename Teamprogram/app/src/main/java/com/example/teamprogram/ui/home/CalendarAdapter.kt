@@ -47,15 +47,15 @@ class CalendarAdapter(val calendarList:List<Calendar>):RecyclerView.Adapter<Recy
     } else if(viewType == Calendar.Today) {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.empty_calendar_item,
             parent, false)
-        EmptyCalendarViewHolder(view).empty_layout.setBackgroundColor(Color.rgb(250,187,187))
+        EmptyCalendarViewHolder(view).empty_layout.setBackgroundColor(Color.parseColor("#DE868F"))
         EmptyCalendarViewHolder(view)
     }else if(viewType == Calendar.Now) {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.empty_calendar_item,
             parent, false)
         val holder = EmptyCalendarViewHolder(view)
         holder.apply {
-            empty_layout.setBackgroundColor(Color.rgb(253,247,191))
-            empty_text.text = "Now"
+            empty_layout.setBackgroundColor(Color.parseColor("#F4CE98"))
+            empty_text.text = "\n\n   NOW"
         }
         EmptyCalendarViewHolder(view)
     }else {
@@ -70,7 +70,7 @@ class CalendarAdapter(val calendarList:List<Calendar>):RecyclerView.Adapter<Recy
         when (holder) {
             is CalendarViewHolder -> {
                 holder.title.text = calendarItem.title
-                holder.timeLeft.text  = calendarItem.timeLeft
+                holder.timeLeft.text  = calendarItem.timeLeft + "h"
             }
             is EmptyCalendarViewHolder -> {
                 holder.title = calendarItem.title
@@ -81,27 +81,27 @@ class CalendarAdapter(val calendarList:List<Calendar>):RecyclerView.Adapter<Recy
 
 
                 when (calendarItem.date) {
-                    "1" ->  holder.date.text = "昨天"
-                    "2" ->  holder.date.text = "今天"
-                    "3" ->  holder.date.text = "明天 "
-                    "4" ->  holder.date.text = "后天"
+                    "1" ->  holder.date.text = "\n\n昨天"
+                    "2" ->  holder.date.text = "\n\n今天"
+                    "3" ->  holder.date.text = "\n\n明天 "
+                    "4" ->  holder.date.text = "\n\n后天"
                     "5" -> {
                         calendar.set(java.util.Calendar.DAY_OF_YEAR,_day+3)
                         val month = calendar.get(java.util.Calendar.MONTH) + 1
                         val day = calendar.get(java.util.Calendar.DATE).toString()
-                        holder.date.text = "$month-$day"
+                        holder.date.text = "\n\n$month-$day"
                     }
                     "6" ->  {
                         calendar.set(java.util.Calendar.DAY_OF_YEAR,_day+4)
                         val month = calendar.get(java.util.Calendar.MONTH) + 1
                         val day = calendar.get(java.util.Calendar.DATE).toString()
-                        holder.date.text = "$month-$day"
+                        holder.date.text = "\n\n$month-$day"
                     }
                     "7" ->  {
                         calendar.set(java.util.Calendar.DAY_OF_YEAR,_day+5)
                         val month = calendar.get(java.util.Calendar.MONTH) + 1
                         val day = calendar.get(java.util.Calendar.DATE).toString()
-                        holder.date.text = "$month-$day"
+                        holder.date.text = "\n\n$month-$day"
                     }
                     else -> throw IllegalArgumentException()
                 }

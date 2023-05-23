@@ -7,10 +7,40 @@
     tools:context=".ui.dashboard.DashboardFragment"
     android:paddingBottom="60dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_dashboard"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:textSize="28dp"
+                android:textAlignment="viewStart"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#4F4F4F"
+                android:text=" Closest Deadline"/>
+            <TextView
+                android:id="@+id/closest_deadline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="48dp"
+                android:fontFamily="sans-serif-condensed-light"
+                android:textColor="#4F4F4F"
+                android:layout_weight="0.7"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_new_schedule"

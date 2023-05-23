@@ -2,33 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="#EAD69D"
+    android:background="#4F4F4F"
     android:orientation="vertical">
 
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="1dp"
+    android:background="@color/white"
+    android:padding="10dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="联系开发者："
+        android:text="账户绑定"
+        android:fontFamily="sans-serif-black"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="28dp" />
 
     <TextView
-        android:id="@+id/mailText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="邮箱：2382713573@qq.com"
-        android:textColor="#000000"
-        android:textSize="14sp" />
-    <TextView
-        android:id="@+id/userText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/mailText"
-        android:text="A GREAT DEVELOPER"
-        android:textColor="#000000"
-        android:textSize="14sp" />
+        android:text="\n输入对应平台账号密码以完成绑定"
+        android:fontFamily="sans-serif-black"
+        android:textColor="#4F4F4F"
+        android:textSize="16dp" />
+
+</LinearLayout>
+
 
 
 </LinearLayout>

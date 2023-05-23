@@ -14,8 +14,9 @@
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iconImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:src="@drawable/account_circle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerInParent="true" />
         </LinearLayout>
         <LinearLayout

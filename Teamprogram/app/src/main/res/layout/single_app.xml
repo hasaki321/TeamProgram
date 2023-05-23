@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="100dp"
     android:padding="5dp"
     android:orientation="vertical">
 
     <ImageView
-        android:background="@color/design_default_color_primary"
+        android:id="@+id/app_image"
+        android:src="@drawable/question_mark"
         android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>

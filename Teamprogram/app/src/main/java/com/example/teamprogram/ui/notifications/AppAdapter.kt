@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import com.example.teamprogram.ui.forum.ForumList
@@ -25,9 +27,12 @@ import java.io.InputStreamReader
 
 class AppAdapter(val Applist: ArrayList<App>):RecyclerView.Adapter<AppAdapter.AppHolder>() {
     lateinit var context:Context
+    private var onImageSelectedListener: OnImageSelectedListener? = null
+    private val PICK_IMAGE_REQUEST_CODE = 100
 
     inner class AppHolder(view: View):RecyclerView.ViewHolder(view){
         val name = view.findViewById<TextView>(R.id.app_single_app_name)
+        val imageView = view.findViewById<ImageView>(R.id.app_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppHolder {
@@ -51,6 +56,10 @@ class AppAdapter(val Applist: ArrayList<App>):RecyclerView.Adapter<AppAdapter.Ap
     override fun onBindViewHolder(holder: AppHolder, position: Int) {
         val appItem = Applist[position]
         holder.name.text = appItem.name
+        if (appItem.image!=""){
+            val bitmap = BitmapFactory.decodeFile(appItem.image)
+            holder.imageView.setImageBitmap(bitmap)
+        }
     }
 
     override fun getItemCount() = Applist.size
@@ -114,6 +123,16 @@ class AppAdapter(val Applist: ArrayList<App>):RecyclerView.Adapter<AppAdapter.Ap
         val name_view = popupView.findViewById<EditText>(R.id.app_float_name)
         val url_view = popupView.findViewById<EditText>(R.id.app_float_url)
         val submit = popupView.findViewById<Button>(R.id.app_float_submit)
+        val image = popupView.findViewById<ImageView>(R.id.app_add_image)
+        image.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            (context as Activity).startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
+        }
+
+        if (image_lc!=""){
+            val bitmap = BitmapFactory.decodeFile(image_lc)
+            image.setImageBitmap(bitmap)
+        }
         name_view.setText(name)
         url_view.setText(url)
 
@@ -143,5 +162,14 @@ class AppAdapter(val Applist: ArrayList<App>):RecyclerView.Adapter<AppAdapter.Ap
         val db = dbHelper.writableDatabase
         db.execSQL("delete from AppList where id = ?", arrayOf(id.toString()))
     }
+
+    fun setOnImageSelectedListener(listener: OnImageSelectedListener) {
+        this.onImageSelectedListener = listener
+    }
 }
+interface OnImageSelectedListener {
+    fun onImageSelected(image: String?)
+}
+
+
 
