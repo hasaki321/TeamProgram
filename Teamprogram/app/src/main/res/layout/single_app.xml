@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="125dp"
     android:padding="5dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/app_image"
         android:src="@drawable/question_mark"
-        android:layout_weight="0.8"
+        android:layout_weight="0.75"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 
@@ -18,7 +19,7 @@
         android:fontFamily="sans-serif-black"
         android:textSize="16dp"
         android:layout_width="match_parent"
-        android:layout_weight="0.2"
+        android:layout_weight="0.25"
         android:layout_height="0dp"/>
 
 </LinearLayout>

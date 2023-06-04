@@ -86,6 +86,7 @@ class DashboardFragment : Fragment(),View.OnClickListener {
         DataList = ArrayList<HomeWorkContent>()
         val sharedPreferences: SharedPreferences = activity!!.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
         val jsonString = sharedPreferences.getString("jsData", "")
+        Log.d("hw:",jsonString.toString())
         try {
             // 获取SharedPreferences实例
             val jsonArray = JSONArray(jsonString)
@@ -99,7 +100,9 @@ class DashboardFragment : Fragment(),View.OnClickListener {
                 val time_left = get_remain_time(end_time)
                 if (time_left>0){
                     DataList.add(HomeWorkContent(course_name,hw_name,content,time_left,HomeWorkContent.HOMEWORK))
-
+                    Log.d("add","true")
+                }else{
+                    Log.d("add","false")
                 }
             }
         }catch (e:java.lang.Exception){
@@ -129,6 +132,8 @@ class DashboardFragment : Fragment(),View.OnClickListener {
         val date2 = LocalDateTime.now(zoneId)
         val duration = Duration.between(date2, date1)
         val minutes = duration.toMinutes()
+        Log.d("now",date2.toString())
+        Log.d("end",date1.toString())
         return minutes
     }
 

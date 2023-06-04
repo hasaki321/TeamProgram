@@ -104,7 +104,9 @@ class HomeFragment : Fragment() {
             }
             true
         }
-
+        binding.calendarCallSide.setOnClickListener(){
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
     }
 
     private fun showFloatingWindow(type:String) {

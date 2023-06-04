@@ -87,6 +87,7 @@ class MyAsyncTask: AsyncTask<Void, Void, Void>(){
             val response = client.newCall(request).execute()
             val responseData = response.body?.string()
             val jsArray: JSONArray = JSONArray(responseData)
+            Log.d("jsondata:",jsArray.toString())
             val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
             sharedPreferences.edit().apply{
                 putString("jsData",jsArray.toString())

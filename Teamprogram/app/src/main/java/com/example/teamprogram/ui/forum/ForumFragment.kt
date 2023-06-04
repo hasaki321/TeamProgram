@@ -60,7 +60,6 @@ class ForumFragment :Fragment(), View.OnClickListener {
                         strList.add(it)
                     }
                 }
-                Toast.makeText(context, "Automatic login successfully!", Toast.LENGTH_SHORT).show()
 
             } catch (e: java.lang.Exception) {
                 val intent = Intent(context, ForumUserLoginPage::class.java)
@@ -74,6 +73,10 @@ class ForumFragment :Fragment(), View.OnClickListener {
         binding.forumUserButton.setOnClickListener(this)
         //发布新贴
         binding.forumAddButton.setOnClickListener(this)
+
+        binding.forumCallSide.setOnClickListener(){
+            binding.forumDrawer.openDrawer(GravityCompat.END)
+        }
         return root
     }
 

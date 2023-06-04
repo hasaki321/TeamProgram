@@ -12,76 +12,110 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingBottom="55dp">
-
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.14"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="#F2F2F2"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:background="#F4F4F4"
-                android:fontFamily="sans-serif-black"
-                android:textSize="16dp"
-                android:layout_weight="0.167"
-                android:text="\n\n   DDL" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:textSize="14dp"
-                android:background="#F4F4F4"
-                android:layout_weight="0.167"
-                android:text="\n  06:00\n       -\n  09:00" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:background="#F4F4F4"
-                android:layout_weight="0.167"
-                android:text="\n  09:00\n       -\n  12:00" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:background="#F4F4F4"
-                android:layout_weight="0.167"
-                android:text="\n  12:00\n       -\n  15:00" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:background="#F4F4F4"
-                android:layout_weight="0.167"
-                android:text="\n  15:00\n       -\n  18:00" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:background="#F4F4F4"
-                android:layout_weight="0.167"
-                android:text="\n  18:00\n       -\n  21:00" />
+                <Button
+                    android:id="@+id/calendar_call_side"
+                    android:layout_width="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/account_circle" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
 
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="0.5dp"
-                android:background="#F4F4F4"
-                android:layout_weight="0.167"
-                android:text="\n  21:00\n       -\n  00:00" />
-
+                android:layout_height="1dp"
+                android:background="#A0A0A0"/>
         </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_calendar"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.9" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="55dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.14"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:background="#F4F4F4"
+                    android:fontFamily="sans-serif-black"
+                    android:textSize="16dp"
+                    android:layout_weight="0.167"
+                    android:text="\n\n   DDL" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:textSize="14dp"
+                    android:background="#F4F4F4"
+                    android:layout_weight="0.167"
+                    android:text="\n  06:00\n       -\n  09:00" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:background="#F4F4F4"
+                    android:layout_weight="0.167"
+                    android:text="\n  09:00\n       -\n  12:00" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:background="#F4F4F4"
+                    android:layout_weight="0.167"
+                    android:text="\n  12:00\n       -\n  15:00" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:background="#F4F4F4"
+                    android:layout_weight="0.167"
+                    android:text="\n  15:00\n       -\n  18:00" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:background="#F4F4F4"
+                    android:layout_weight="0.167"
+                    android:text="\n  18:00\n       -\n  21:00" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.5dp"
+                    android:background="#F4F4F4"
+                    android:layout_weight="0.167"
+                    android:text="\n  21:00\n       -\n  00:00" />
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_calendar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9" />
+        </LinearLayout>
     </LinearLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
         android:layout_width="match_parent"
