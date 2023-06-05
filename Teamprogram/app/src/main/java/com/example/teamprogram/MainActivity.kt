@@ -68,7 +68,7 @@ class MyAsyncTask: AsyncTask<Void, Void, Void>(){
         val client = OkHttpClient()
 
         val content = load("学习通")
-        if (content.isNullOrEmpty()){
+        if (content.isNullOrEmpty()||content.size==1){
             val sharedPreferences: SharedPreferences = _context.getSharedPreferences("HW_data", Context.MODE_PRIVATE)
             sharedPreferences.edit().apply{
                 putString("jsData","还没有输入学习通账户！")
