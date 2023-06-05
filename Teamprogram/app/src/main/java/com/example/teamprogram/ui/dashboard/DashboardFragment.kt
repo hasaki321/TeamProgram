@@ -122,8 +122,10 @@ class DashboardFragment : Fragment(),View.OnClickListener {
             } while (cursor.moveToNext())
         }
         DataList.sortBy  { it.time_left }
-        val cloest_time = DataList[0].time_left
-        binding.closestDeadline.setText("${cloest_time/60/24}D ${cloest_time/60%24}H ${cloest_time%60}M")
+        try{
+            val cloest_time = DataList[0].time_left
+            binding.closestDeadline.setText("${cloest_time/60/24}D ${cloest_time/60%24}H ${cloest_time%60}M")
+        }catch (_:Exception){ }
     }
 
     private fun get_remain_time(time:String): Long {
