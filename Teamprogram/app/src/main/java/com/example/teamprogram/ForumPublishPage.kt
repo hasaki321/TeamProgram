@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.teamprogram.databinding.ForumPublishPageBinding
-import com.example.teamprogram.ui.forum.ForumListDataHelper
 import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
